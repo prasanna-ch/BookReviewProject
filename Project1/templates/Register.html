@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<style>
+  #titles{
+    text-align: center;
+    color: rgb(72, 24, 243);
+    font-size: 30px;
+    font-family: cursive;
+    background-color: rgb(217, 236, 245);
+    padding: 10px;
+    border-radius: 50px;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-bottom: 5%;
+}
+
+header{
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.btn-secondary{
+    margin-left: 20%;
+}
+.input-group{
+    margin-left:0%;
+}
+.form-control{
+    margin-right: 0%;
+}
+.input-group-text{
+    font-family: cursive;
+}
+
+</style>
+<html>
+    <header>        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <head>
+            <title>Register</title>
+        </head>
+        <body>
+          <div class = "container" style="font-style: italic;font-family: cursive;size: 10px;">
+            {% if message %}
+				    <p>{{ message }}</p>
+				    {% endif %}
+          </div>
+          <h1 id=titles><u>Registration Page</u></h1>
+          <form action="{{url_for('register')}}" method="POST">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Email ID</span>
+              </div>
+              <input type="email" class="form-control" name="name" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <br>
+          <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Password</span>
+              </div>
+              <input type="password" class="form-control" name="pwd" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" pattern=".{8,}" title="Eight or more characters">
+            </div>
+            <br>
+          <button type="submit" class="btn btn-secondary btn-lg">Register</button>
+          <button type="submit" class="btn btn-secondary btn-lg" formaction="/login">Login</button>
+        </form>        
+        </body>
+    </header>
+</html>

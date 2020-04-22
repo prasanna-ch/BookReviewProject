@@ -8,5 +8,22 @@
         <form action="/logout">
             <button>Log out</button>
         </form>
+        <form action = "/login/books" method="POST">
+        </div>
+        <input type="name" required name="name" class="form-control" id="mail">
+      </div>
+        <button>Search</button>
+
+        {% if status == "searched" %}
+         <p>you have searched for {{tag}}</p>
+         <ol>
+             <!-- {{msg}} -->
+            {% for i in msg %}
+                <li>{{ i.title }}</li>
+            {% endfor %}
+
+         </ol>
+        {% endif %}
+    </form>
     </body>
 </html>

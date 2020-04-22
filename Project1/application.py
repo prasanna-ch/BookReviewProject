@@ -3,12 +3,12 @@ from flask import Flask, session, render_template, request
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from models import Users, db
+from models import *
 from create import app
 import datetime
 
 app = Flask(__name__)
-
+os.environ['DATABASE_URL'] =  'postgres://vnvllzmogbmndv:8296aad966c453ef11dc98457f1e3ff5ebf3f5ac6e8019508f2d42cc2fd7f517@ec2-52-70-15-120.compute-1.amazonaws.com:5432/ddm0vcg85hm9a8'
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
@@ -87,4 +87,31 @@ def index():
     if session.get("email") is None:
         return render_template('Register.html')
     return render_template("login.html")
-    
+@app.route("/login/books",methods = ["GET","POST"])
+def books():
+    if request.method == "POST":
+        # searchitem=request.form.get("name")
+        tag = request.form.get("name")
+        print(tag)
+        search = "%{}%".format(tag)
+        print("search")
+        # SELECT Word, Description, Example
+        # FROM WordLists
+        # WHERE ( (Word LIKE '%' + @SearchKey + '%') 
+        # OR (Description LIKE '%' + @SearchKey + '%') 
+        # OR (Example LIKE '%' + @SearchKey +'%') ) 
+        # Flight.query.filter(or_(Flight.origin == "Paris", Flight.duration > 500)).all()
+        books1 = Books.query.filter(Books.title.like(search)).all()
+        books2 = Books.query.filter(Books.isbn.like(search)).all()
+        books3 = Books.query.filter(Books.author.like(search)).all()
+        books4 = Books.query.filter(Books.year.like(search)).all()
+        books=books1+books2+books3+books4
+
+
+
+        # li = Users.query.filter(Users.email.like('%'+ searchitem +'%')).all()
+        # print(posts)
+        return render_template("login.html",msg=books,status="searched",tag=tag)
+
+if __name__ == "__main__":
+    app.run()

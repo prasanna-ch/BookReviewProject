@@ -36,7 +36,6 @@ def register():
         name = request.form.get("name")
         pwd = request.form.get("pwd")
         timestamp = datetime.datetime.now()
-        # print(request.form)
 
         try:
             new_user = Users(email = name, password = pwd, timestamp = timestamp)
@@ -65,9 +64,7 @@ def authenticate():
     if request.method == 'POST':
         email = request.form.get("name")
         password = request.form.get("pwd")
-        # print ("email: ",email,"password:" , password)
         data = Users.query.get(email)
-        # print (data)
         if data != None:
             print(data)
             if password == data.password:

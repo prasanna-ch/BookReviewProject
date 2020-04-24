@@ -19,7 +19,8 @@
          <ol>
              <!-- {{msg}} -->
             {% for i in msg %}
-                <li>{{ i.title }}</li>
+            <li> <a href="/login/books/{{i.isbn}}">{{i.isbn}}</a>{{i.title}} {{ i.year}}{{ i.author}} {{i.isbn}}</li>
+                <!-- <input type="name" required name=i.title class="form-control" id="mail"> -->
             {% endfor %}
 
          </ol>

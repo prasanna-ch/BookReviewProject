@@ -22,9 +22,27 @@ class Books(db.Model):
     title=db.Column(db.String,nullable=False)
     author=db.Column(db.String,nullable=False)
     year=db.Column(db.String,nullable=False)
+    
+    
 
     def __init__(self,isbn,title,author,year):
         self.isbn = isbn
         self.title = title
         self.author = author
         self.year = year
+    def get_book_details(self,isbn):
+        b = Books.query.get(isbn)
+        return b
+class Reviews(db.Model):
+    __tablename__="reviews"
+    email = db.Column(db.String, db.ForeignKey('users.email'))
+    book_isbn = db.Column(db.String, db.ForeignKey('books.isbn'))
+    review = db.Column(db.String)
+    rating = db.Column(db.String)
+    __table_args__ = (db.PrimaryKeyConstraint('email', 'book_isbn'),)
+
+    def __init__(self, email, book_isbn, review, rating):
+        self.email = email
+        self.book_isbn = book_isbn
+        self.review = review
+        self.rating = rating

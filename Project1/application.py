@@ -64,6 +64,7 @@ def admin():
 def authenticate():
     if request.method == 'POST':
         email = request.form.get("name")
+        # e=email(email)
         password = request.form.get("pwd")
         # print ("email: ",email,"password:" , password)
         data = Users.query.get(email)
@@ -89,18 +90,12 @@ def index():
     return render_template("login.html")
 @app.route("/login/books",methods = ["GET","POST"])
 def books():
-    if request.method == "POST":
+    if request.method == "GET":
+        return render_template("login.html")
+    else:
         # searchitem=request.form.get("name")
         tag = request.form.get("name")
-        print(tag)
         search = "%{}%".format(tag)
-        print("search")
-        # SELECT Word, Description, Example
-        # FROM WordLists
-        # WHERE ( (Word LIKE '%' + @SearchKey + '%') 
-        # OR (Description LIKE '%' + @SearchKey + '%') 
-        # OR (Example LIKE '%' + @SearchKey +'%') ) 
-        # Flight.query.filter(or_(Flight.origin == "Paris", Flight.duration > 500)).all()
         books1 = Books.query.filter(Books.title.like(search)).all()
         books2 = Books.query.filter(Books.isbn.like(search)).all()
         books3 = Books.query.filter(Books.author.like(search)).all()
@@ -112,6 +107,35 @@ def books():
         # li = Users.query.filter(Users.email.like('%'+ searchitem +'%')).all()
         # print(posts)
         return render_template("login.html",msg=books,status="searched",tag=tag)
+@app.route("/login/books/<isbn>", methods=["GET","POST"])
+def book_detail(isbn):
+    if request.method == "GET":
+        book = Books.query.get(isbn)
+        email=session.get('email')
+        rev=db.query(Reviews).all()
+        reviewlist={}
+        for i in rev:
+            if i.book_isbn == isbn and i.email!=email:
+                reviewlist[i.review]=i.rating
+        print(reviewlist)
+        for i in rev:
+            if i.email == email and i.book_isbn == isbn:
+                review=i.review
+                rating=i.rating
+                return render_template("book_details.html",msg="Already reviewed",review=review,book=book,rating=rating,rl=reviewlist)
+        return render_template("book_details.html",msg="not reviewed",book=book,rl=reviewlist)
+    else:
+        print("here in post method")
+        book = Books.query.get(isbn)
+        isbn=book.isbn
+        email=session.get('email')
+        review=request.form.get("review")
+        rating=request.form.get("rating")
+        r=Reviews(email=email, book_isbn=isbn, review=review, rating=rating)
+        db.add(r)
+        db.commit()
+        return render_template("book_details.html",msg="reviewed",review=review,book=book,rating=rating)
+
 
 if __name__ == "__main__":
     app.run()

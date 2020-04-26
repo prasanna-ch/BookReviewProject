@@ -76,7 +76,10 @@ def authenticate():
                 return render_template("login.html")
             else:
                 return render_template("Register.html", message="Incorrect password")
-    return render_template("Register.html", message="Invalid email")
+        else:
+            return render_template("Register.html", message="Invalid email")
+    else:
+        return render_template("Register.html")
 
 @app.route("/logout")
 def logout():
@@ -116,7 +119,11 @@ def book_detail(isbn):
         reviewlist={}
         for i in rev:
             if i.book_isbn == isbn and i.email!=email:
-                reviewlist[i.review]=i.rating
+                l=[]
+                name=i.email.split('@')[0]
+                l.append(i.review)
+                l.append(i.rating)
+                reviewlist[name]=l
         print(reviewlist)
         for i in rev:
             if i.email == email and i.book_isbn == isbn:

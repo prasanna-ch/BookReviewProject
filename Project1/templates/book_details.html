@@ -6,51 +6,95 @@
         Book Page
     </title>
 </head>
+<style>
+    details{
+    font-size: larger;
+    font-style: italic;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    padding: 5px;
+    text-align: center;
+    background-color: powderblue;
+    font-size: 18px;
+    border-radius: 15px;
+    cursor: -webkit-grab; cursor: grab;
+}
+    body{
+        background-image: url('https://ak1.picdn.net/shutterstock/videos/6307541/thumb/1.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .main{
+        text-align: center;
+        font-style: italic;
+        font-variant: inherit;
+    }
+    .info{
+        text-align: center;
+        font-size: x-large;
+        font-style: italic;
+    }
+    h2{
+        text-align: center;
+        font-weight: bolder;
+        font-style: italic;
+    }
+</style>
 
 <body>
-    <h1>
+    <h1 class="main">
         Book Details</h1>
-    <h2> Title= {{book.title}}</h2>
+    <p class="info"> You have choosen a book called <strong>{{book.title}}</strong> which was written by <strong>{{book.author}}</strong> in the year <strong>{{book.year}}</strong></p>
     {% if msg == "Already reviewed" %}
-    <p>you  reviewed this book as "{{review}}" and rating is "{{ rating }}"</p>
-    <ol>Other user reviews and readings are
+    <p class="info">you already reviewed this book as <strong>{{review}}</strong> and rating given by you is <strong>{{ rating }}</strong></p>
+    <h2>you can see other user reviews and ratings here</h2>
         {% if rl|length == 0 %}
-        <p>No reviews yet</p>
+        <p class='info'>No reviews yet</p>
         {% endif %}
         {% for key,value in rl.items() %}
-        <li>Review is "{{key}}" and rating is "{{value}}"</li>
+        <details>
+            <summary>Click here to see what user "{{key}}" has said about it</summary>
+            <p> Review is "{{value[0]}}" .</p>
+            <p>Rating is {{value[1]}}</p>
+            
+          </details>
+          <br/><br/>
         {% endfor %}
-    </ol>
-    {% endif %}
-    {% if msg == "reviewed" %}
-    <p>you  just now reviewed this book as "{{review}}" and rating is "{{ rating }}".Thanks for your review</p>
     {% endif %}
     
     {% if msg == "not reviewed" %}
-    <p>Please review this book</p>
+    <p class='info'><strong>You can review this book here</strong> </p>
     <form action="/login/books/{{book.isbn}}" method = "POST">
         <div>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
             <div class="rating">
-                <span><input type="radio" name="rating" id="str5" value="1"><label for="str5"></label></span>
+                <p class='info'>Please <strong>rate</strong> here:</Please><span><input type="radio" name="rating" id="str5" value="1"><label for="str5"></label></span>
                 <span><input type="radio" name="rating" id="str4" value="2"><label for="str4"></label></span>
                 <span><input type="radio" name="rating" id="str3" value="3"><label for="str3"></label></span>
                 <span><input type="radio" name="rating" id="str2" value="4"><label for="str2"></label></span>
                 <span><input type="radio" name="rating" id="str1" value="4"><label for="str1"></label></span>
-            </div>
-        <label for="review">Please review here : </label>
+            </div></p>
+        <p class='info'><label for="review">Please <strong>review</strong> here : </label>
         <input type="text" name="review" class="form-control" id="review">
-        <button type="submit" class="registerbtn">submit</button>
+        <button type="submit" class="registerbtn" style="cursor:pointer">submit</button></p>
     </div>
     </form>
-    <ol>Other user reviews and readings are
+    <h2>you can see other user reviews and ratings here</h2>
         {% if rl|length == 0 %}
-        <p>No reviews yet</p>
+        <p class='info'>No reviews yet</p>
         {% endif %}
         {% for key,value in rl.items() %}
-        <li>Review is "{{key}}" and rating is "{{value}}"</li>
+        <details>
+            <summary >Click here to see what user "{{key}}" has said about it</summary>
+            <p> Review is "{{value[0]}}" .</p>
+            <p>Rating is {{value[1]}}</p>
+            
+          </details>
+          <br/><br/>
         {% endfor %}
-    </ol>
+    {% endif %}
+    {% if msg == "reviewed" %}
+    <p class="info">you  just now reviewed this book as "{{review}}" and rating is "{{ rating }}".</p>
+    <p class='info'><strong>Thanks for your review</strong> </p>
     {% endif %}
     
 

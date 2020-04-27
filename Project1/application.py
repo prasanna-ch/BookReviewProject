@@ -79,7 +79,9 @@ def authenticate():
         else:
             return render_template("Register.html", message="Invalid email")
     else:
-        return render_template("Register.html")
+        if session.get("email") is None:
+            return render_template('Register.html')
+    return render_template("login.html")
 
 @app.route("/logout")
 def logout():
@@ -99,10 +101,10 @@ def books():
         # searchitem=request.form.get("name")
         tag = request.form.get("name")
         search = "%{}%".format(tag)
-        books1 = Books.query.filter(Books.title.like(search)).all()
-        books2 = Books.query.filter(Books.isbn.like(search)).all()
-        books3 = Books.query.filter(Books.author.like(search)).all()
-        books4 = Books.query.filter(Books.year.like(search)).all()
+        books1 = Books.query.filter(Books.title.ilike(search)).all()
+        books2 = Books.query.filter(Books.isbn.ilike(search)).all()
+        books3 = Books.query.filter(Books.author.ilike(search)).all()
+        books4 = Books.query.filter(Books.year.ilike(search)).all()
         books=books1+books2+books3+books4
 
 
@@ -137,7 +139,8 @@ def book_detail(isbn):
         isbn=book.isbn
         email=session.get('email')
         review=request.form.get("review")
-        rating=request.form.get("rating")
+        rating=request.form.get("star")
+        print(rating)
         r=Reviews(email=email, book_isbn=isbn, review=review, rating=rating)
         db.add(r)
         db.commit()

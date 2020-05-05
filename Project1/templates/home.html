@@ -6,16 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <style>
     * {
         outline: none;
     }
-
-    /* html,
-    body {
-        
-    } */
 
     html,
     body {
@@ -250,15 +246,13 @@
         <input type="submit" id="fname" name="fname" value="Logout">
     </form>
 
-    <form action="/login/books" method="POST">
-
+    <form>
         <div id="cover">
-            <form method="get" action="">
+            <form>
                 <div class="tb">
-                    <!-- <div class="td"><input type="text" placeholder="Search" required></div> -->
-                    <div class="td"><input type="text" required name="name" placeholder="Search"> </div>
+                    <div class="td"><input type="text" required name="search" placeholder="Search" id = "search"> </div>
                     <div class="td" id="s-cover">
-                        <button type="submit">
+                        <button type="button" onclick="search_btn()">
                             <div id="s-circle"></div>
                             <span></span>
                         </button>
@@ -266,27 +260,48 @@
                 </div>
             </form>
         </div>
-
-        {% if status == "searched" %}
-        <p style="font-size: x-large;font-style: italic;">
-            <br>You have searched for {{tag}}<br>
-            <br> Here are the books related your search<br>
-            <br> You can get books details by clicking the isbn number. Happy Reading !<br>
-        </p>
-        <ol>
-
-            {% for i in msg %}
-            <li> <a href="/login/books/{{i.isbn}}">{{i.isbn }} </a> {{" "+i.title+"   "}}    {{ i.year+"   "}}
-                {{ i.author+"   "}} </li>
-            {% endfor %}
-
-        </ol>
-        {% endif %}
     </form>
+    <li>
+        <div id = "content"></div>
+    </li>
 
     <div class="footer">
         <h2>“A Book is Dream you have in your hand - Noil Gaiman”</h2>
     </div>
+
+    <script>
+        const email = "{{email}}"
+        function search_btn() {
+            const request = new XMLHttpRequest();
+            const val = document.querySelector('#search').value;        
+            request.open("POST" , "/api/search")
+            request.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+            document.querySelector("#content").innerHTML = ""
+            request.onload = () => {
+                const response = JSON.parse(request.responseText);
+                if (request.status === 200) {
+                    response.books.forEach(book => {                    
+                    let i = `
+                        <p><b>Title: ${book.title}</b></p>
+                        <p><b>Author: ${book.author}</b></p>
+                        <p><b>Year of Publication: ${book.year}</b></p>
+                        <button type="submit" style="width: 250px; margin: 0 auto; color: red; background: pink; font-family: italic; font-size : 20px;" onclick="book(${book.isbn.toString()})">View Book Details</button>
+                        `;
+                        document.querySelector('#content').innerHTML += i
+                    });
+                }
+            }
+            const data = JSON.stringify({"search" : val, "email" : email})
+            request.send(data);
+            return false;
+        }
+
+        function book(isbn){
+            alert("Do you want to give review for book isbn: "+isbn+"?");
+            return false;
+        }
+    </script>
+
 </body>
 
 </html>

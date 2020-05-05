@@ -7,6 +7,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime as dt
 import csv
+from models import *
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://vnvllzmogbmndv:8296aad966c453ef11dc98457f1e3ff5ebf3f5ac6e8019508f2d42cc2fd7f517@ec2-52-70-15-120.compute-1.amazonaws.com:5432/ddm0vcg85hm9a8'
@@ -16,18 +17,6 @@ db = SQLAlchemy(app)
 
 
 
-class Books(db.Model):
-    __tablename__="books"
-    isbn=db.Column(db.String,primary_key=True)
-    title=db.Column(db.String,nullable=False)
-    author=db.Column(db.String,nullable=False)
-    year=db.Column(db.String,nullable=False)
-
-    def __init__(self,isbn,title,author,year):
-        self.isbn = isbn
-        self.title = title
-        self.author = author
-        self.year = year
 
 def main():
     db.create_all()

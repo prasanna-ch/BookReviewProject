@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div class="container" style="display: grid;">
+            <table class="table" border="1">
+                <tr>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Timestamp</th>
+                </tr>
+                {% for i in data %}
+                <tr>
+                    <td>{{i.email}}</td>
+                    <td>{{i.password}}</td>
+                    <td>{{i.timestamp}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+</html>

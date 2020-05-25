@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>Register</title>
+  <script>
+    function checkEmail() {
+    var email = document.getElementById('txtEmail');
+    var pwd = document.getElementById('pwd');
+    var filter = /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    var strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/;
+    if (!filter.test(email.value) && !strongRegex.test(pwd.value)) {
+        alert('Please provide a valid email address and password');
+        email.focus;
+        pwd.focus;
+        return false;
+    }
+    if (!filter.test(email.value)) {
+        alert('Please provide a valid email address');
+        email.focus;
+        return false;
+    }
+
+    if (!strongRegex.test(pwd.value)) {
+        alert('Your password should have atleast one uppercase letter, one lowercase letter, one numeric, one special character..minimum length should be 6');
+        pwd.focus;
+        return false;
+    }  
+
+}
+
+  </script>
+
+  <style>
+    body {
+      background-image: url(https://usersnap.com/blog/wp-content/uploads/2017/04/web-design-background.png);
+      /* background-image: url(https://blog.hdwallsource.com/wp-content/uploads/2016/02/open-book-wallpaper-45039-46209-hd-wallpapers.jpg); */
+      padding: 15px;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    input[type=text] {
+      width: 25%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      border: none;
+      background-color: rgb(217, 236, 245);
+      color: white;
+      text-align: center;
+
+    }
+
+    header {
+      padding: 10px;
+      margin-left: 0%;
+      margin-right: 0%;
+    }
+
+    .button {
+      background-color: #4CAF50;
+      /* Green */
+      border: none;
+      color: white;
+      padding: 15px 152px;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      text-align: center;
+      width: 25%
+    }
+
+    */ .topnav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+   
+    .active{
+      text-align: center;
+      font-size: xx-large;
+      color: white;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    .footer {
+      padding: 15px;
+      margin-top: 90px;
+      text-align: bottom;
+      background: #ddd;
+      margin-bottom: 10px;
+      border-radius: 20px;
+
+    }
+    
+    h2{
+      text-align: center;
+      color: black;
+    }
+    .registerbtn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px 20px;
+        margin: 8px 0;
+        border: none;
+        font-size: larger;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
+        }
+  </style>
+
+
+
+</head>
+
+<body>
+
+  <div class="footer1">
+    <h1 class="active" >WELCOME TO GOOD READS</h1>
+    <!-- <a href="Register.html">Home</a>
+    <a href="login.html">Search</a>
+    <a href="Register.html">Logout</a> -->
+
+  </div>
+  <!-- <h1 style="text-align: center;font-size: xx-large;"> WELCOME TO GOOD READS</h1> -->
+
+  <div class="container" style="font-style: italic;font-family: cursive;size: 10px;">
+    {% if message %}
+    <p>{{ message }}</p>
+    {% endif %}
+  </div>
+
+
+  <div
+    style="border-radius: 75px; background-color:#f2f2f2 ; padding:40px; width: 300px; text-align: center;margin-left: 30px;margin-top: 40px;">
+    <form action="{{url_for('register')}}" onsubmit='return checkEmail()' method="POST">
+      <label for="fname">Email Id :</label>
+      <input type="email" id="txtEmail" name="name" placeholder="Email">
+
+      <label for="lname">Password :</label>
+      <input type="password" id="pwd" name="pwd" placeholder="Password">
+
+      <button type="submit" class="registerbtn">Register</button>
+      <button type="submit" class="registerbtn" formaction="/login">Login</button>
+
+      
+    </form>
+  </div>
+
+  <div class="footer">
+    <h2>“Reading is essential for those who seek to rise above the ordinary.” – Jim Rohn</h2>
+  </div>
+</body>
+</header>
+
+</html>
